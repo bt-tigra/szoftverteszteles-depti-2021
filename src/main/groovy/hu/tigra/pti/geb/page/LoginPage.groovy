@@ -11,10 +11,12 @@ class LoginPage extends Page {
 
     static content = {
         loginForm { $('form[id="login_form"]') }
-        emailAddress { $('form[id="login_form"]').$('input[id="email"]') }
-        password { $('form[id="login_form"]').$('input[id="passwd"]') }
-        loginButton { $('form[id="login_form"]').$('button[id="SubmitLogin"]') }
+        emailAddress { loginForm.$('input[id="email"]') }
+        password { loginForm.$('input[id="passwd"]') }
+        loginButton { loginForm.$('button[id="SubmitLogin"]') }
         errorMessages(required: false) { $('div[class="alert alert-danger"]:first-of-type').module ErrorMessages }
+        registerEmail { $('input[id="email_create"]') }
+        registerButton { $('button[id="SubmitCreate"]') }
     }
 
     def login(emailAddress, password) {

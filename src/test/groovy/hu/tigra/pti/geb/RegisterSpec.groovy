@@ -6,7 +6,7 @@ import hu.tigra.pti.geb.page.RegisterPage
 
 class RegisterSpec extends BaseSpec {
 
-    def 'A regisztrációs képernyőre navigálok'() {
+    def 'Felhasználó regisztrálása'() {
         given: 'Megérkezünk a főoldalra.'
         def mainPage = waitFor { to MainPage }
 
@@ -17,10 +17,19 @@ class RegisterSpec extends BaseSpec {
         def loginPage = waitFor { at LoginPage }
 
         when: 'Kitöltöm a regisztrációs emailt és rákattintok a "Create an account" gombra'
-        loginPage.registerEmail = 'teszt123@tigra.hu'
+        loginPage.registerEmail = "teszt${Util.getRandomNumber(100, 999)}@tigra.hu"
         loginPage.registerButton.click()
 
-        then: 'Megjelenik a felhasználó adatai felület: "My account".'
-        waitFor { at RegisterPage }
+        then: 'Megjelenik a regisztrációs képernyő "CREATE AN ACCOUNT" címmel'
+        def registerPage = waitFor { at RegisterPage }
+
+        when: 'Kitöltöm a "Your personal information" blokkban az összes mezőt és a "Register" gombra kattintok.'
+        registerPage.gender.checked = 'Mr.'
+
+        then: '5 hibaüzenet jelenik meg'
+
+        /*when: 'Kitöltöm a jelszót újra és a "Your address" blokkban a mezőket, majd a "Register" gombra kattintok.'
+
+        then: 'Megjelenik a felhasználó adatai felület: "My account".'*/
     }
 }

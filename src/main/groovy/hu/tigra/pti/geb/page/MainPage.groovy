@@ -10,5 +10,7 @@ class MainPage extends Page {
 
     static content = {
         loginButton { $('a[class="login"]') }
+        searchInput { $('input[id="search_query_top"]') }
+        searchButton { $('button[name="submit_search"]') }
     }
 }

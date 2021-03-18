@@ -10,7 +10,9 @@ class ProductPage extends Page {
 
     static content = {
         body { $('body[id="product"]') }
-
+        quantity { $('input[id="quantity_wanted"]') }
+        size { $('select[id="group_1"]') }
+        addToCartButton { $('button[name="Submit"]') }
     }
 
     def addToCartIsSuccessful() {

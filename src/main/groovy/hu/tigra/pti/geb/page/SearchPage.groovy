@@ -14,5 +14,12 @@ class SearchPage extends Page {
         // A termékek árait tartalmazza szöveges formában
         prices { $('div.product-container div.right-block-content span[itemprop="price"]').collect{it.text()} }
 
+        counterText { $('span.heading-counter') }
+        sortInput { $('select[id="selectProductSort"]') }
+        moreButtons { $('a[title="View"]') }
+    }
+
+    def counterEquals(int number) {
+        counterText.text() == "${number} results have been found."
     }
 }

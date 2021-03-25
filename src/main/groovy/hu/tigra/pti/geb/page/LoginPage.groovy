@@ -1,6 +1,7 @@
 package hu.tigra.pti.geb.page
 
 import geb.Page
+import hu.tigra.pti.geb.domain.User
 import hu.tigra.pti.geb.module.ErrorMessages
 
 class LoginPage extends Page {
@@ -19,9 +20,15 @@ class LoginPage extends Page {
         registerButton { $('button[id="SubmitCreate"]') }
     }
 
-    def login(emailAddress, password) {
+    def login(String emailAddress, String password) {
         this.emailAddress = emailAddress
         this.password = password
+        loginButton.click()
+    }
+
+    def login(User user) {
+        emailAddress = user.emailAddress
+        password = user.password
         loginButton.click()
     }
 }

@@ -14,5 +14,14 @@ class OrderPage extends Page {
 
         nextButton(required: false) { $('p.cart_navigation').$('.button.btn.btn-default.button-medium') }
 
+        totalProductPrice { $('td[id="total_product"]').text().substring(1).toDouble() }
+
+        updateDeliveryAddressButton { $('ul[id="address_delivery"]').$('a[title="Update"]') }
+
+        shippingAgreeTerms(required: false) { $('input[id="cgv"]').module(Checkbox) }
+
+        payByCheckButton(required: false) { $('a[class="cheque"]') }
+
+        message(required: false) { $('p.alert.alert-success') }
     }
 }

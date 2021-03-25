@@ -9,6 +9,8 @@ class AddressPage extends Page {
     static at = { title == 'Address - My Store' }
 
     static content = {
+        postalCode { $('input[id="postcode"]') }
 
+        saveButton { $('button[id="submitAddress"]') }
     }
 }

@@ -1,6 +1,9 @@
 package hu.tigra.pti.geb
 
+import hu.tigra.pti.geb.page.AddressPage
+import hu.tigra.pti.geb.page.LoginPage
 import hu.tigra.pti.geb.page.MainPage
+import hu.tigra.pti.geb.page.OrderPage
 import hu.tigra.pti.geb.page.ProductPage
 import hu.tigra.pti.geb.page.SearchPage
 
@@ -42,64 +45,70 @@ class ProductSpec extends BaseSpec {
         productPage.addToCartIsSuccessful()
 
         when: 'Rákattintok a "Proceed to checkout" gombra'
-
+        productPage.checkoutButton.click()
 
         then: 'Megérkezek a rendelés oldalra, aminek a címe: "SHOPPING-CART SUMMARY"' +
               'és a "Total products" résznél szereplő összeg megegyezik az 50.99 háromszorosával'
         // Itt használható az OrderPage
+        def orderPage = waitFor { at OrderPage }
         // hint: A cím több mindent is tartalmazhat, egyenlőséggel nem jó vizsgálni
-
+        orderPage.header.text().startsWith('SHOPPING-CART SUMMARY')
+        orderPage.totalProductPrice == quantity * highestPrice
 
         when: 'Rákattintok a "Proceed to checkout" gombra'
         // hint: A továbblépésekhez használható az orderPage.nextButton változó
-
+        orderPage.nextButton.click()
 
         then: 'Megjelenik a bejelentkezés oldal'
         // Itt használható a korábban létrehozott LoginPage
-
+        def loginPage = waitFor { at LoginPage }
 
         when: 'Elvégzem a bejelentkezést'
-
+        loginPage.login(Constant.USERS.HELYES_FELHASZNALO)
 
         then: 'Visszakerülök a rendelés oldalra, aminek a címe: "ADDRESSES"'
+        waitFor { at OrderPage }
+        orderPage.header.text() == 'ADDRESSES'
 
-
-        /*when: 'A "YOUR DELIVERY ADDRESS" részben lévő címen módosítani akarok, ezért az "Update" gombra kattintok'
-
+        when: 'A "YOUR DELIVERY ADDRESS" részben lévő címen módosítani akarok, ezért az "Update" gombra kattintok'
+        orderPage.updateDeliveryAddressButton.click()
 
         then: 'A cím szerkesztő oldalára jutok'
         // Itt használható az AddressPage
-
+        def addressPage = waitFor { at AddressPage }
 
         when: 'Egy mező értékét átírom és a "Save" gombra kattintok'
-
+        addressPage.postalCode = '98765'
+        addressPage.saveButton.click()
 
         then: 'Visszakerülök a rendelés oldalra, aminek a címe: "ADDRESSES"'
-
+        waitFor { at OrderPage }
+        orderPage.header.text() == 'ADDRESSES'
 
         when: 'Rákattintok a "Proceed to checkout" gombra'
-
+        orderPage.nextButton.click()
 
         then: 'Megjelenik a rendelés oldal "SHIPPING" című része'
-
+        orderPage.header.text() == 'SHIPPING'
 
         when: 'Bepipálom az "I agree to the terms..." dobozt és rákattintok a "Proceed to checkout" gombra'
-
+        orderPage.shippingAgreeTerms.check()
+        orderPage.nextButton.click()
 
         then: 'Megjelenik a rendelés oldal "PLEASE CHOOSE YOUR PAYMENT METHOD" című része'
-
+        orderPage.header.text() == 'PLEASE CHOOSE YOUR PAYMENT METHOD'
 
         when: 'Kiválasztom a "Pay by check" opciót'
-
+        orderPage.payByCheckButton.click()
 
         then: 'Megjelenik a rendelés oldal "ORDER SUMMARY" című része'
-
+        waitFor { orderPage.header.text() == 'ORDER SUMMARY' }
 
         when: 'Rákattintok az "I confirm my order" gombra'
+        orderPage.nextButton.click()
 
-
-        then: 'Megjelenik a sikeres rendelés üzenete: "Your order on My Store is complete."'*/
-
+        then: 'Megjelenik a sikeres rendelés üzenete: "Your order on My Store is complete."'
+        waitFor { orderPage.message.text() == 'Your order on My Store is complete.' }
 
         where:
         quantity = 3

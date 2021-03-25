@@ -13,6 +13,7 @@ class ProductPage extends Page {
         quantity { $('input[id="quantity_wanted"]') }
         size { $('select[id="group_1"]') }
         addToCartButton { $('button[name="Submit"]') }
+        checkoutButton { $('div[id="layer_cart"]').$('a[title="Proceed to checkout"]') }
     }
 
     def addToCartIsSuccessful() {
